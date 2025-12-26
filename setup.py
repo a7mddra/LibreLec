@@ -7,7 +7,8 @@ REQUIRED_PACKAGES = [
     "playwright",
     "pillow",
     "rich",
-    "questionary"
+    "questionary",
+    "nest_asyncio"
 ]
 
 def print_step(msg):
