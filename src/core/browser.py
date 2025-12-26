@@ -11,7 +11,12 @@ class BrowserManager:
         """Starts the Playwright engine and browser."""
         self.playwright = sync_playwright().start()
         self.browser = self.playwright.chromium.launch(headless=Config.HEADLESS)
-        self.context = self.browser.new_context(viewport=Config.VIEWPORT)
+        
+        # FIXED: Added device_scale_factor for High-Res Screenshots
+        self.context = self.browser.new_context(
+            viewport=Config.VIEWPORT,
+            device_scale_factor=Config.SCALE_FACTOR
+        )
         return self
 
     def create_page(self):

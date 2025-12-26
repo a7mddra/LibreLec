@@ -41,7 +41,7 @@ def main():
             cli.wait_for_enter()
 
             # --- AUTO-DISCOVERY MAGIC ---
-            print("[italic]Scanning frames for DRM container...[/]")
+            cli.console.print("[italic]Scanning frames for DRM container...[/italic]")
             scraper = SlideScraper(page)
             raw_src = scraper.find_target_frame()
 
@@ -75,13 +75,13 @@ def main():
                 with cli.console.status("[bold cyan]Analyzing DOM Structure...", spinner="dots"):
                     # We peek at the count to set up the progress bar
                     page_elements = scraper.get_slide_elements()
-                    total_pages = len(page_elements)
+                    total_pages = page_elements.count()
                     
                     # Retry logic if 0 (Lazy loading delay)
                     if total_pages == 0:
                         time.sleep(3)
                         page_elements = scraper.get_slide_elements()
-                        total_pages = len(page_elements)
+                        total_pages = page_elements.count()
 
                 if total_pages > 0:
                     # 2. Extraction Phase
@@ -111,7 +111,7 @@ def main():
             if keep_going == "Quit":
                 break
             else:
-                print("[yellow]Navigate to the next lecture in the browser, then come back here.[/]")
+                cli.console.print("[yellow]Navigate to the next lecture in the browser, then come back here.[/yellow]")
 
 if __name__ == "__main__":
     try:

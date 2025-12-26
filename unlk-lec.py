@@ -2,6 +2,13 @@
 import sys
 import os
 
+# 1. APPLY PATCH IMMEDIATELY
+try:
+    import nest_asyncio
+    nest_asyncio.apply()
+except ImportError:
+    pass
+
 # Ensure the src directory is in the python path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(current_dir, "src"))

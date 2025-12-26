@@ -46,10 +46,14 @@ class CLI:
         self.console.print("[italic]Isolating viewer...[/]")
 
     def ask_confirm_extraction(self):
-        return questionary.confirm("Try extraction anyway on current view?").ask()
+        # Fallback to input() to avoid async conflicts inside loop
+        res = input("Try extraction anyway on current view? [y/N]: ").strip().lower()
+        return res == 'y'
 
-    def get_pdf_name(self):
-        return questionary.text("Enter Output Filename (e.g. Logic_Lec1):").ask()
+    def get_pdf_name(self, default_name=""):
+        # Fallback to input() to avoid async conflicts inside loop
+        prompt = f"Enter Output Filename [{default_name}]: " if default_name else "Enter Output Filename: "
+        return input(prompt).strip()
 
     def show_extraction_start(self, pdf_name):
         self.console.clear()
@@ -71,8 +75,9 @@ class CLI:
         self.console.print(f"\n[bold green]SUCCESS[/] 🔓 \nArtifact saved to: [underline]{path}[/]")
 
     def ask_next_step(self):
-        return questionary.select(
-            "Operation Complete. Next Step?",
-            choices=["Extract Another PDF", "Quit"],
-            pointer=">"
-        ).ask()
+        # Fallback to input() to avoid async conflicts inside loop
+        print("\nOperation Complete.")
+        res = input("Extract Another PDF? [Y/n]: ").strip().lower()
+        if res == 'n':
+            return "Quit"
+        return "Extract Another PDF"
